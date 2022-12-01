@@ -5,6 +5,10 @@ fairmotion provides easy-to-use interfaces and tools to work with motion capture
 Users can take advantage of large high-quality motion capture datasets like the [CMU](http://mocap.cs.cmu.edu/) and [AMASS](https://amass.is.tue.mpg.de/) datasets without deep knowledge of the domain or handling the idiosyncrasies of individual datasets. We implement baselines for research tasks using building blocks from the library to demonstrate its utility.
 
 <img src="fairmotion/viz/samples/anim_viz.gif" width="500"><img src="fairmotion/viz/samples/anim_smpl.gif" width="330">
+## Dataset we used for GCT634
+Data (bvh) : https://github.com/zhouqiu/DanceData/tree/master
+
+
 
 ## Getting Started
 
