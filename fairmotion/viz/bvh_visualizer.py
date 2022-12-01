@@ -3,6 +3,14 @@
 import argparse
 import numpy as np
 import os
+
+import sys
+
+# include PATH
+# realpath: /home/vml/fairmotion/fairmotion/fairmotion/viz
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../../")
+
+
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
