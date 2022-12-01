@@ -17,7 +17,7 @@ AIST_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../DanceData/AIST++_
 def change_save_bvh_files(path):
     file_list = os.listdir(path)
     bvh_list = [file for file in file_list if file.endswith('.bvh')] ## 파일명 끝이 .bvh
-    print("# %d bvh files to change offset"%len(bvh_list))
+    print("%d bvh files to change offset"%len(bvh_list))
 
     for bvh_file in bvh_list:
         motion = bvh.load(path + bvh_file, load_motion=True)
