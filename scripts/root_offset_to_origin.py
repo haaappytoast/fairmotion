@@ -31,8 +31,8 @@ def change_save_bvh_files(path):
         if not os.path.exists(NEW_PATH):
             os.makedirs(NEW_PATH)
         bvh.save(motion, NEW_BVH_FILE)
-        print("finished")
-        return
+    print("finished")
+    return
 
 # * change ROOT position offset to new offset
 def get_new_root_offset_to(motion, offset = [0.0, 0.0, 0.0]):
