@@ -1,4 +1,4 @@
-# This is for GCT536 Final Project
+# This is for GCT634 Final Project
 
 ## Dataset we used for GCT634
 Data (bvh) : https://github.com/zhouqiu/DanceData/tree/master
