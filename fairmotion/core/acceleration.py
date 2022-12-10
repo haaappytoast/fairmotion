@@ -17,6 +17,7 @@ class Acceleration(object):
         if v_init:
             assert v_final and dt
             assert isinstance(v_init, Velocity) and isinstance(v_final, Velocity)
+            self.skel = v_init.skel
             self.data_local, self.data_global = Acceleration.compute(v_init, v_final, dt)
     
     def set_skel(self, skel):
@@ -30,6 +31,8 @@ class Acceleration(object):
     
     @classmethod
     def compute(cls, v_init, v_final, dt):
+        assert v_init.skel == v_final.skel
+
         data_local = []
         data_global = []
         
@@ -37,7 +40,7 @@ class Acceleration(object):
         
         data_local = v_final.data_local / dt - v_init.data_local / dt
         data_global = v_final.data_global / dt - v_init.data_global / dt
-            
+
         return np.array(data_local), np.array(data_global)
     
     def get_all(self, key, local, R_ref=None):
@@ -83,8 +86,8 @@ class MotionWithAcceleration(Motion):
         
     def _compute_accelerations(self, frame_start=None, frame_end=None):
         accelerations = []
-        v_init = 0.0
-        v_final = 0.0
+        v_init = None
+        v_final = None
 
         if frame_start is None:
             frame_start = 0
@@ -95,20 +98,24 @@ class MotionWithAcceleration(Motion):
             # interval: 2 frames 
             frame1 = max(0, (i - 1))
             frame2 = min(self.num_frames() - 1, (i + 1))
+
             dt = (frame2 - frame1) / float(self.fps)
-            
+
+
             pose1 = self.get_pose_by_frame(frame1)
             pose2 = self.get_pose_by_frame(frame2)
             
-            # compute velocity 
+            # compute velocity
             v_final = Velocity(pose1, pose2, dt)
-            
+            if v_init == None:
+                v_init = v_final
+
             # compute accelerations
             accelerations.append(Acceleration(v_init, v_final, dt))
-            
+
             # keep current velocity to use for the next frame 
             v_init = v_final
-            
+        
         return accelerations
     
     def get_acceleration_by_time(self, time):
@@ -148,7 +155,6 @@ class MotionWithAcceleration(Motion):
         ma.poses = m.poses
         ma.vels = m.vels
         ma.info = m.info
-
 
         ma.compute_accelerations()
         return ma
