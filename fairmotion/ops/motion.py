@@ -5,6 +5,7 @@ import numpy as np
 
 from fairmotion.core import motion as motion_class
 from fairmotion.core import velocity as vel_class
+from fairmotion.core import acceleration as acc_class
 from fairmotion.ops import conversions, math, quaternion
 
 
@@ -165,6 +166,10 @@ def append(
     if isinstance(combined_motion, vel_class.MotionWithVelocity):
         combined_motion.compute_velocities()
 
+    if isinstance(combined_motion, acc_class.MotionWithAcceleration):
+        combined_motion.compute_velocities()
+        combined_motion.compute_accelerations()
+
     return combined_motion
 
 
@@ -201,6 +206,11 @@ def transform(motion, T, pivot=0, local=False):
     # Recompute velocities if exists
     if isinstance(motion, vel_class.MotionWithVelocity):
         motion.compute_velocities()
+    
+    if isinstance(motion, acc_class.MotionWithAcceleration):
+        motion.compute_velocities()
+        motion.compute_accelerations()
+        
     return motion
 
 
@@ -254,6 +264,9 @@ def cut(motion, frame_start, frame_end):
     # Recompute velocities if exists
     if isinstance(cut_motion, vel_class.MotionWithVelocity):
         cut_motion.vels = cut_motion.vels[frame_start:frame_end]
+    if isinstance(cut_motion, acc_class.MotionWithAcceleration):
+        cut_motion.vels = cut_motion.vels[frame_start:frame_end]
+        cut_motion.accelerations = cut_motion.accelerations[frame_start:frame_end]
 
     return cut_motion
 
@@ -284,6 +297,10 @@ def resample(motion, fps):
     # Recompute velocities if exists
     if isinstance(motion, vel_class.MotionWithVelocity):
         motion.compute_velocities()
+    
+    if isinstance(motion, acc_class.MotionWithAcceleration):
+        motion.compute_velocities()
+        motion.compute_accelerations()
 
     return motion
 
