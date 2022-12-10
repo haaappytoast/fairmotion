@@ -2,18 +2,7 @@ import numpy as np
 
 from fairmotion.data import bvh
 from fairmotion.ops import motion as motion_class
-import os
-
-TASK_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../"
-DANCE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../DanceData"
-AIST_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../DanceData/AIST++_bvh/"
-
-# * get motion from bvh file
-def get_motion(bvh_file):
-    bvh_path = AIST_PATH + bvh_file
-    motion = bvh.load(bvh_path, load_motion=True)
-    return motion
-
+from utils import get_motion
 
 # * get magnitude for each vector
 # (x, y, z) -> srt(x^2 + y^2 + z^2)
