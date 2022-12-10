@@ -1,13 +1,9 @@
 import numpy as np
-
+import os, sys
+import config
 from fairmotion.data import bvh
 from fairmotion.ops import motion as motion_class
-from utils import get_motion
-
-# * get magnitude for each vector
-# (x, y, z) -> srt(x^2 + y^2 + z^2)
-def _get_magnitude(matrix, axs):
-    return np.linalg.norm(matrix, axis = axs)
+from utils import get_motion, _get_magnitude
 
 # * dot product of arr1 and arr2 in last axis
 def _get_dot_of_3D_array_in_laxis(arr1, arr2):    
@@ -41,9 +37,6 @@ def extract_dtheta(motion, start_f=0, nof=1800):
     curr_m_trimmed = motion_class.cut(motion, start_f, start_f + nof)               # 0 ~ 1799
     next_m_trimmed = motion_class.cut(motion, start_f + 1, start_f + nof + 1)       # 1 ~ 1800
 
-    bvh.save(curr_m_trimmed, "curr_m_trimmed")
-    bvh.save(next_m_trimmed, "next_m_trimmed")
-
     numerator = _get_dot_of_3D_array_in_laxis(curr_m_trimmed.positions(local=False), next_m_trimmed.positions(local=False)) # (1800, 27)
     # get magnitude of each vector (okay)
     curr_mag = _get_magnitude(curr_m_trimmed.positions(local=False), 2) # (1800, 27)
@@ -60,7 +53,7 @@ def extract_dtheta(motion, start_f=0, nof=1800):
 # * extract directional change for one motion file
     #! we can do many jobs from HERE using extract_angle 
     #! since we got angle difference for each jnt for each frame!
-def extract_ddir(motion, start_f=0, nof=1800):
+def _extract_ddir(motion, start_f=0, nof=1800):
     # save each joint directional change
     # positions: (seq_len(frame numbers), num_joints, 3)
     
@@ -77,5 +70,5 @@ if __name__ == "__main__":
 
     bvh_f = "gBR_sFM_cAll_d04_mBR0_ch01.bvh"
     motion = get_motion(bvh_f)
-    extract_ddir(motion)
+    _extract_ddir(motion)
 
